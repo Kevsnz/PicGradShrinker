@@ -87,7 +87,6 @@ namespace PictureShrinkerGrad
 			timer.Start ();
 
 			int shrinkNo = 1;
-			//for ( shrinkNo = 1; shrinkNo <= shrinkAmtPx * 2; shrinkNo++ )
 			while ( picw > targetW || pich > targetH )
 			{
 				int w = vert ? pich : picw;
@@ -140,17 +139,6 @@ namespace PictureShrinkerGrad
 					}
 				}
 
-				/*using ( var sw = new StreamWriter ( Path.Combine ( dir, "Path Map "+shrinkNo.ToString("0000")+".log"), false ))
-				{
-					for ( int line = 0; line < h; line++ )
-					{
-						for ( int row = 0; row < w - 1; row++ )
-							sw.Write ( pathMap[ line, row ].Cost.ToString ( "0.000" ) + "\t" );
-
-						sw.WriteLine ();
-					}
-				}//*/
-
 				// Find cheapest verical path
 				var cheapestRows = new int[ h ];
 
@@ -166,11 +154,6 @@ namespace PictureShrinkerGrad
 
 				for ( int line = h - 2; line >= 0; line-- )
 					cheapestRows[ line ] = cheapestRows[ line + 1 ] + pathMap[ line + 1, cheapestRows[ line + 1 ] ].PrevOffset;
-
-				/***
-				for ( int line = 0; line < h; line++ )
-					grads[ cheapestRows[ line ], line ] = maxg;
-				new Action<double[ , ], int, int, double, double, string> ( dumpPicToBmp2 ).BeginInvoke ( grads, w - 1, h, maxg, ming, Path.Combine ( dir, "Shrink " + shrinkNo.ToString ( "0000" ) + " path.png" ), null, null );//*/
 
 				// Perform shrinking
 				var newPic = new Color[ vert ? picw : picw - 1, vert ? pich - 1 : pich ];
